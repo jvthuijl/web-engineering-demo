@@ -15,7 +15,7 @@ class RepositoryFetcher extends Controller
         $client = new Client();
         $client->authenticate($user->getGhAccessToken(), null, Client::AUTH_HTTP_TOKEN);
         try {
-            return $client->me()->starring()->all();
+            return ['success' => true, 'data' => $client->me()->starring()->all()];
         } catch (\Exception $e) {
             dd($e);
         }
