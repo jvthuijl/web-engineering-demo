@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNote;
+use App\Http\Requests\NoteRequest;
+use App\Http\Resources\NoteResource;
 use App\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class NoteController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreNote $request)
+    public function store(NoteRequest $request)
     {
         $validated = $request->validated();
         $note = Note::create([
@@ -40,27 +41,29 @@ class NoteController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return NoteResource
      */
     public function show($id)
     {
         $note = Note::findOrFail($id);
-        if ($note->author != Auth::user()) {
+        $user = Auth::user();
+        if ($user->can('view', $note)) {
             return response()->json(['error' => true, 'message' => 'Forbidden.'], 403);
         }
-        return $note;
+        return new NoteResource($note);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param NoteRequest $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(NoteRequest $request, $id)
     {
-        //
+        $validated = $request->validated();
+        return new NoteResource(Note::updateOrCreate($validated));
     }
 
     /**
@@ -72,7 +75,8 @@ class NoteController extends Controller
     public function destroy($id)
     {
         $note = Note::find($id);
-        if ($note->author() != Auth::user()) {
+        $user = Auth::user();
+        if ($user->can('delete', $note)) {
             return response()->json(['error' => true, 'message' => 'Forbidden.'], 403);
         }
     }
