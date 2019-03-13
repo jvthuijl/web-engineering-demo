@@ -6,18 +6,17 @@ use App\Note;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNote extends FormRequest
+class NoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @param Note $note
      * @param User $user
      * @return bool
      */
-    public function authorize(Note $note, User $user)
+    public function authorize(User $user)
     {
-        return ($note->author() === $user);
+        return $user->can('create', Note::class);
     }
 
     /**
