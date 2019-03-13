@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use League\OAuth2\Client\Provider\Github;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton(Github::class, function ($app) {
+            return new Github([
+                'clientId' => config('app.github_client_id'),
+                'clientSecret' => config('app.github_client_secret'),
+                'redirectUri' => route('auth.verify')
+            ]);
+        });
     }
 }
