@@ -7,11 +7,17 @@ use App\Http\Resources\NoteResource;
 use App\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class NoteController extends Controller
 {
-    public function index() {
-        return NoteResource::collection(Note::all());
+    public function index($repositoryId) {
+        $notes = QueryBuilder::for(Note::class)
+            ->allowedFilters(['content'])
+            ->whereRepoId($repositoryId)
+            ->get();
+
+        return NoteResource::collection($notes);
     }
 
     /**
@@ -20,12 +26,12 @@ class NoteController extends Controller
      * @param NoteRequest $request
      * @return NoteResource
      */
-    public function store(NoteRequest $request)
+    public function store($repositoryId, NoteRequest $request)
     {
         $validated = $request->validated();
 
         $note = Note::create([
-            'repo_id' => $validated['repo_id'],
+            'repo_id' => $repositoryId,
             'content' => $validated['content'],
             'user_id' => Auth::user()->id,
         ]);

@@ -27,7 +27,6 @@ class NoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'repo_id' => 'required',
             'content' => 'required',
         ];
     }
