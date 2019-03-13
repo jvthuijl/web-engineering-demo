@@ -10,46 +10,40 @@ use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $user = Auth::user();
-        return $user->notes();
+    public function index() {
+        return NoteResource::collection(Note::all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param NoteRequest $request
+     * @return NoteResource
      */
     public function store(NoteRequest $request)
     {
         $validated = $request->validated();
+
         $note = Note::create([
             'repo_id' => $validated['repo_id'],
             'content' => $validated['content'],
             'user_id' => Auth::user()->id,
         ]);
+
+        return new NoteResource($note);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param Note $note
      * @return NoteResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show($id)
+    public function show(Note $note)
     {
-        $note = Note::findOrFail($id);
-        $user = Auth::user();
-        if ($user->can('view', $note)) {
-            return response()->json(['error' => true, 'message' => 'Forbidden.'], 403);
-        }
+        $this->authorize('view', $note);
+
         return new NoteResource($note);
     }
 
@@ -57,27 +51,33 @@ class NoteController extends Controller
      * Update the specified resource in storage.
      *
      * @param NoteRequest $request
-     * @param  int $id
+     * @param Note $note
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(NoteRequest $request, $id)
+    public function update(NoteRequest $request, Note $note)
     {
+        $this->authorize('update', $note);
+
         $validated = $request->validated();
-        return new NoteResource(Note::updateOrCreate($validated));
+        $note->fill($validated);
+
+        return new NoteResource($note);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Note $note
+     * @return array
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy($id)
+    public function destroy(Note $note)
     {
-        $note = Note::find($id);
-        $user = Auth::user();
-        if ($user->can('delete', $note)) {
-            return response()->json(['error' => true, 'message' => 'Forbidden.'], 403);
-        }
+        $this->authorize('delete', $note);
+
+        $note->delete();
+
+        return ['success' => true];
     }
 }
