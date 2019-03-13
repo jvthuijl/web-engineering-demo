@@ -23,14 +23,16 @@ class NoteController extends Controller
             ->whereRepoId($repositoryId)
             ->whereUserId(Auth::user()->id)
             ->get();
-        
+
         return NoteResource::collection($notes)->additional(['success' => true]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param             $repositoryId
      * @param NoteRequest $request
+     *
      * @return NoteResource
      */
     public function store($repositoryId, NoteRequest $request)
@@ -86,7 +88,7 @@ class NoteController extends Controller
      * @return array
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Note $note)
+    public function destroy($repositoryId, Note $note)
     {
         $this->authorize('delete', $note);
 

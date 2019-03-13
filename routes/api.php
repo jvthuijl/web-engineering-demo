@@ -18,7 +18,10 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::post('/verify', 'AuthController@verify')->name('auth.verify');
 
-    Route::post('/logout', 'AuthController@logout')->middleware('auth:api');
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('/logout', 'AuthController@logout');
+        Route::get('/me', 'AuthController@me');
+    });
 });
 
 Route::group(['middleware' => 'auth:api'], function () {

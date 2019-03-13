@@ -9,6 +9,9 @@
             <b-card-group v-else deck v-for="i in Math.ceil(notes.length / 2)" :key="i">
                 <b-card v-for="note in notes.slice((i - 1) * 2, i * 2)" :key="note.id">
                     <b-card-text>{{ note.content }}</b-card-text>
+                    <div slot="footer" class="text-center">
+                        <b-button type="button" variant="danger" @click="deleteNote(note)">Delete</b-button>
+                    </div>
                 </b-card>
             </b-card-group>
         </div>
@@ -78,7 +81,7 @@
                 try {
                     this.isSaving = true;
                     let resp = await axios.post(`/api/repositories/${this.repository.id}/notes`, {
-                        content: this.newNoteText
+                        content: noteText
                     }).finally(() => this.isSaving = false);
 
                     if (resp.data.success) {
@@ -87,6 +90,14 @@
                 } catch (error) {
                     this.errorMessage = error;
                 }
+            },
+            async deleteNote(note) {
+                if (!confirm('Are you sure?')) {
+                    return;
+                }
+
+                await axios.delete(`/api/repositories/${this.repository.id}/notes/${note.id}`);
+                this.notes = this.notes.filter(n => n.id !== note.id);
             },
             onReset() {
                 this.newNoteText = '';

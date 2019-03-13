@@ -80,6 +80,6 @@ class AuthController extends Controller
     }
 
     public function me() {
-
+        return ['success' => true, 'data' => \Auth::user()];
     }
 }
