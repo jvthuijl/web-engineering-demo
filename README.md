@@ -20,7 +20,7 @@ When you do not have a running database server, you can use the sqlite driver. [
 7. Modify the env file and setup `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`. [How to get these keys?](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
 8. Apply changes to the database: `php artisan migrate`
 9. Generate the front end code (compiling SCSS files, bundeling up js files): `npm run dev`
-10. Serve the application. `php artisan serve`, [Valet] (https://laravel.com/docs/5.8/valet) or [Homestead] (https://laravel.com/docs/5.8/homestead)
+10. Serve the application. `php artisan serve`, [Valet](https://laravel.com/docs/5.8/valet) or [Homestead](https://laravel.com/docs/5.8/homestead)
 
 ## How to modify
 When modifying the front end code (resources/js/... or resources/css/...) you have to make sure that you are recompiling your code.
