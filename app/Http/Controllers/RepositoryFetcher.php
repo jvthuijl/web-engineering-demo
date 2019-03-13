@@ -17,9 +17,7 @@ class RepositoryFetcher extends Controller
         try {
             return ['success' => true, 'data' => $client->me()->starring()->all()];
         } catch (\Exception $e) {
-            dd($e);
+            return response()->json(['success' => true, 'error' => $e->getMessage()], 400);
         }
-
-        return [];
     }
 }
