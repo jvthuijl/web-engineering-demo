@@ -1805,12 +1805,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      authenticatedUser: null
+      authenticatedUser: null,
+      selectedRepository: null
     };
   },
   methods: {
     userAuthenticated: function userAuthenticated(user) {
       this.authenticatedUser = user;
+    },
+    setSelectedRepository: function setSelectedRepository(repository) {
+      this.selectedRepository = repository;
     }
   }
 });
@@ -1962,10 +1966,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryList.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RepositoryList.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryComment.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RepositoryComment.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1977,30 +1981,150 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['repository'],
+  data: function data() {
+    return {
+      textarea: "test"
+    };
+  },
+  watch: {
+    repository: function repository(_repository) {
+      this.textarea = _repository;
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit(evt) {
+      evt.preventDefault();
+      alert(JSON.stringify(this.repository));
+    },
+    onReset: function onReset(evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+
+      this.textarea = '';
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryList.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RepositoryList.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
   data: function data() {
     return {
-      fields: ['repository', 'user', 'number_of_stars'],
-      items: [{
-        isActive: true,
-        repository: 'Test',
-        user: 'Julius',
-        number_of_stars: 10
+      fields: [{
+        key: 'repository',
+        sortable: true
       }, {
-        repository: 'Test',
-        user: 'Noam',
-        number_of_stars: 10
-      }]
+        key: 'number_of_stars',
+        sortable: true
+      }],
+      items: [],
+      hasError: false,
+      errorMessage: '',
+      selectMode: 'single'
     };
   },
   created: function created() {
-    console.log(this.user);
-    this.items.push({
-      repository: 'Asdasd',
-      user: this.user.name,
-      number_of_stars: 10
-    });
+    this.retrieveRepositories();
+  },
+  methods: {
+    retrieveRepositories: function () {
+      var _retrieveRepositories = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var _this = this;
+
+        var resp;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios.get("/api/users/".concat(this.user.id, "/repositories"));
+
+              case 3:
+                resp = _context.sent;
+                console.log(resp);
+
+                if (resp.data.success) {
+                  console.log(resp);
+                  resp.data.data.forEach(function (repository) {
+                    _this.items.push({
+                      repository: repository.full_name,
+                      number_of_stars: repository.stargazers_count
+                    });
+                  });
+                }
+
+                _context.next = 12;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](0);
+                this.hasError = true;
+                this.errorMessage = _context.t0;
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 8]]);
+      }));
+
+      function retrieveRepositories() {
+        return _retrieveRepositories.apply(this, arguments);
+      }
+
+      return retrieveRepositories;
+    }(),
+    rowSelected: function rowSelected(selectedItems) {
+      if (selectedItems.length > 0) this.$emit('selectedRepository', selectedItems[0].repository);
+    }
   }
 });
 
@@ -44436,13 +44560,23 @@ var render = function() {
                 _c("h1", [_vm._v("Your favorites")]),
                 _vm._v(" "),
                 _c("repository-list", {
-                  attrs: { user: _vm.authenticatedUser }
+                  attrs: { user: _vm.authenticatedUser },
+                  on: { selectedRepository: _vm.setSelectedRepository }
                 })
               ],
               1
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "col-6" }, [_c("repository-comment")], 1)
+            _c(
+              "div",
+              { staticClass: "col-6" },
+              [
+                _c("repository-comment", {
+                  attrs: { repository: _vm.selectedRepository }
+                })
+              ],
+              1
+            )
           ])
     ],
     1
@@ -44535,6 +44669,79 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryComment.vue?vue&type=template&id=3a1c2e5a&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RepositoryComment.vue?vue&type=template&id=3a1c2e5a& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h1", [_vm._v(_vm._s(_vm.repository))]),
+      _vm._v(" "),
+      _vm.repository !== null
+        ? _c(
+            "b-form",
+            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+            [
+              _c(
+                "b-form-group",
+                [
+                  _c("b-form-textarea", {
+                    attrs: {
+                      id: "textarea",
+                      placeholder: "Enter something...",
+                      rows: "3",
+                      "max-rows": "6"
+                    },
+                    model: {
+                      value: _vm.textarea,
+                      callback: function($$v) {
+                        _vm.textarea = $$v
+                      },
+                      expression: "textarea"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { type: "submit", variant: "primary" } },
+                [_vm._v("Submit")]
+              ),
+              _vm._v(" "),
+              _c("b-button", { attrs: { type: "reset", variant: "danger" } }, [
+                _vm._v("Reset")
+              ])
+            ],
+            1
+          )
+        : _c("p", [
+            _vm._v("\n        Please select a repository on the left\n    ")
+          ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryList.vue?vue&type=template&id=a0981b9a&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RepositoryList.vue?vue&type=template&id=a0981b9a& ***!
@@ -44553,8 +44760,20 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("b-alert", { attrs: { show: _vm.hasError, variant: "danger" } }, [
+        _vm._v(_vm._s(_vm.errorMessage))
+      ]),
+      _vm._v(" "),
       _c("b-table", {
-        attrs: { striped: "", hover: "", items: _vm.items, fields: _vm.fields }
+        attrs: {
+          selectable: "",
+          "select-mode": _vm.selectMode,
+          striped: "",
+          hover: "",
+          items: _vm.items,
+          fields: _vm.fields
+        },
+        on: { "row-selected": _vm.rowSelected }
       })
     ],
     1
@@ -56915,17 +57134,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-var render, staticRenderFns
-var script = {}
+/* harmony import */ var _RepositoryComment_vue_vue_type_template_id_3a1c2e5a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RepositoryComment.vue?vue&type=template&id=3a1c2e5a& */ "./resources/js/components/RepositoryComment.vue?vue&type=template&id=3a1c2e5a&");
+/* harmony import */ var _RepositoryComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RepositoryComment.vue?vue&type=script&lang=js& */ "./resources/js/components/RepositoryComment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
-  script,
-  render,
-  staticRenderFns,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RepositoryComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RepositoryComment_vue_vue_type_template_id_3a1c2e5a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RepositoryComment_vue_vue_type_template_id_3a1c2e5a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -56933,8 +57155,42 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   
 )
 
+/* hot reload */
+if (false) { var api; }
 component.options.__file = "resources/js/components/RepositoryComment.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/RepositoryComment.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/RepositoryComment.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RepositoryComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./RepositoryComment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryComment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RepositoryComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/RepositoryComment.vue?vue&type=template&id=3a1c2e5a&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/RepositoryComment.vue?vue&type=template&id=3a1c2e5a& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RepositoryComment_vue_vue_type_template_id_3a1c2e5a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./RepositoryComment.vue?vue&type=template&id=3a1c2e5a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RepositoryComment.vue?vue&type=template&id=3a1c2e5a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RepositoryComment_vue_vue_type_template_id_3a1c2e5a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RepositoryComment_vue_vue_type_template_id_3a1c2e5a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
@@ -57025,8 +57281,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Julius van Dijk\Desktop\Uni\web-engineering-demo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Julius van Dijk\Desktop\Uni\web-engineering-demo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/noam/Documents/University/web-engineering-demo/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/noam/Documents/University/web-engineering-demo/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
