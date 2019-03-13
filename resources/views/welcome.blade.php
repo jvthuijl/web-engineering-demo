@@ -6,12 +6,8 @@
         <title>Laravel</title>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col" id="app">
-                    <repository-list></repository-list>
-                </div>
-            </div>
+        <div class="container"  id="app">
+            <app></app>
         </div>
         <script src="{{ mix('/js/app.js') }}"></script>
    </body>

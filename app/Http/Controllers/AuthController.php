@@ -21,7 +21,7 @@ class AuthController extends Controller
             'scope' => ['user', 'user:email']
         ]);
 
-        return redirect($authorizationUrl);
+        return ['success' => true, 'data' => ['redirect_url' => $authorizationUrl]];
     }
 
     public function verify(Request $request) {
