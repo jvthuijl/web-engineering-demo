@@ -47,8 +47,12 @@ export default {
                     this.isVerifying = true;
                     const resp = await axios.post('/api/auth/verify', {code: code});
 
-                    if (resp.data.success) 
+                    if (resp.data.success) {
+                        axios.defaults.headers.common = {
+                            'Authorization': 'Bearer ' + resp.headers.authorization
+                        };
                         this.$emit('authenticated', resp.data.data.user);
+                    }
 
                 } 
                 catch (error) {

@@ -1925,7 +1925,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 9:
               resp = _context2.sent;
-              if (resp.data.success) this.$emit('authenticated', resp.data.data.user);
+
+              if (resp.data.success) {
+                axios.defaults.headers.common = {
+                  'Authorization': 'Bearer ' + resp.headers.authorization
+                };
+                this.$emit('authenticated', resp.data.data.user);
+              }
+
               _context2.next = 16;
               break;
 
