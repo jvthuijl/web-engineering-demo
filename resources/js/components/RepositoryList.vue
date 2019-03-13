@@ -1,12 +1,19 @@
 <template>
     <div>
         <b-alert :show="errorMessage !== null" variant="danger">{{ errorMessage }}</b-alert>
+        <b-input-group>
+          <b-form-input v-model="filter" placeholder="Type to Search" />
+          <b-input-group-append>
+            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+          </b-input-group-append>
+        </b-input-group>
         <b-table selectable
                  select-mode="single"
                  @row-selected="rowSelected"
                  :items="items"
                  :fields="fields"
                  :busy="isFetching"
+                 :filter="filter"
                  striped hover>
             <div slot="table-busy" class="text-center text-info">
                 <b-spinner class="align-middle"/>
@@ -32,7 +39,8 @@
                     }],
                 isFetching: false,
                 repositories: [],
-                errorMessage: null
+                errorMessage: null,
+                filter: null
             }
         },
 
