@@ -17,7 +17,7 @@ class NoteController extends Controller
             ->whereRepoId($repositoryId)
             ->get();
 
-        return NoteResource::collection($notes);
+        return NoteResource::collection($notes)->additional(['success' => true]);
     }
 
     /**
@@ -30,13 +30,14 @@ class NoteController extends Controller
     {
         $validated = $request->validated();
 
-        $note = Note::create([
-            'repo_id' => $repositoryId,
+        $note = new Note([
             'content' => $validated['content'],
-            'user_id' => Auth::user()->id,
         ]);
+        $note->user_id = \Auth::user()->id;
+        $note->repo_id = $repositoryId;
+        $note->save();
 
-        return new NoteResource($note);
+        return (new NoteResource($note))->additional(['success' => true]);
     }
 
     /**
@@ -50,7 +51,7 @@ class NoteController extends Controller
     {
         $this->authorize('view', $note);
 
-        return new NoteResource($note);
+        return (new NoteResource($note))->additional(['success' => true]);
     }
 
     /**
@@ -68,7 +69,7 @@ class NoteController extends Controller
         $validated = $request->validated();
         $note->fill($validated);
 
-        return new NoteResource($note);
+        return (new NoteResource($note))->additional(['success' => true]);
     }
 
     /**

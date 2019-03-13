@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Note extends Model
 {
+    protected $fillable = ['content'];
+
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');

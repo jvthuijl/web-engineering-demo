@@ -51,6 +51,7 @@ export default {
                         axios.defaults.headers.common = {
                             'Authorization': 'Bearer ' + resp.headers.authorization
                         };
+
                         this.$emit('authenticated', resp.data.data.user);
                     }
 
