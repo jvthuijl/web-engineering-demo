@@ -11,12 +11,18 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class NoteController extends Controller
 {
+    /**
+     * Display all resources.
+     *
+     * @param $repositoryId int
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index($repositoryId) {
         $notes = QueryBuilder::for(Note::class)
             ->allowedFilters(['content'])
             ->whereRepoId($repositoryId)
+            ->whereUserId(Auth::user()->id)
             ->get();
-
         return NoteResource::collection($notes);
     }
 
