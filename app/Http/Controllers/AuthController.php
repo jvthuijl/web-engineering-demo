@@ -41,13 +41,14 @@ class AuthController extends Controller
             $githubUser = $this->ghProvider->getResourceOwner($token);
             $dbUser = User::whereGithubId($githubUser->getId())->first();
             if (!$dbUser) {
-                $dbUser = new User(['github_id' => $githubUser->getId()]);
+                $dbUser = new User();
             }
 
             $dbUser->name = $githubUser->getNickname();
             $dbUser->email = $githubUser->getEmail();
+            $dbUser->github_id = $githubUser->getId();
             $dbUser->github_profile_url = $githubUser->getUrl();
-            $dbUser->github_token = json_encode($token->getValues());
+            $dbUser->github_token = json_encode($token);
 
             $dbUser->rollApiKey();
             $dbUser->save();

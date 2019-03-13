@@ -80,4 +80,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Note::class);
     }
+
+    public function getGhAccessToken() {
+        return $this->github_token ? json_decode($this->github_token)->access_token : null;
+    }
+
+    public function getGhRefreshToken() {
+        return $this->github_token ? json_decode($this->github_token)->refresh_token : null;
+    }
 }

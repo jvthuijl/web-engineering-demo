@@ -13,10 +13,12 @@
         "barryvdh/laravel-ide-helper": "^2.6",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "knplabs/github-api": "^2.11",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "league/oauth2-client": "^2.4",
-        "league/oauth2-github": "^2.0"
+        "league/oauth2-github": "^2.0",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
