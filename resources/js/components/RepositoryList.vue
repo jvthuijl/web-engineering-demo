@@ -1,26 +1,58 @@
 <template>
-  <div>
-    <b-table striped hover :items="items" :fields="fields" />
-  </div>
+    <div>
+        <b-alert :show="hasError" variant="danger">{{ errorMessage }}</b-alert>
+        <b-table selectable :select-mode="selectMode" @row-selected="rowSelected" striped hover :items="items" :fields="fields" />
+    </div>
 </template>
 
 <script>
-  export default {
+export default {
     props: ['user'],
 
     data() {
-      return {
-        fields: ['repository', 'user', 'number_of_stars'],
-        items: [
-            {isActive: true, repository: 'Test', user: 'Julius', number_of_stars: 10},
-            {repository: 'Test', user: 'Noam', number_of_stars: 10}
-        ]
-      }
+        return {
+            fields: [
+                { 
+                    key : 'repository',
+                    sortable: true
+                },
+                { 
+                    key : 'number_of_stars',
+                    sortable : true
+                }],
+            items: [],
+            hasError: false,
+            errorMessage: '',
+            selectMode: 'single'
+        }
     },
 
     created() {
-      console.log(this.user);
-      this.items.push({repository: 'Asdasd', user: this.user.name, number_of_stars: 10});
+        this.retrieveRepositories();
+    },
+
+    methods: {
+        async retrieveRepositories() {
+            try { 
+                const resp = await axios.get(`/api/users/${this.user.id}/repositories`);
+                console.log(resp);
+                if (resp.data.success) {
+                  console.log(resp);
+                    resp.data.data.forEach(repository => {
+                        this.items.push({repository: repository.full_name,  number_of_stars: repository.stargazers_count});
+                    });
+                }
+            } 
+            catch (error){
+                this.hasError = true;
+                this.errorMessage = error;
+            }
+        },
+        rowSelected(selectedItems) {
+          if(selectedItems.length > 0)
+            this.$emit('selectedRepository', selectedItems[0].repository);
+        }
+
     }
-  }
+}
 </script>

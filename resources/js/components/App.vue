@@ -4,10 +4,10 @@
         <div v-else class="row">
             <div class="col-6">
                 <h1>Your favorites</h1>
-                <repository-list :user="authenticatedUser"></repository-list>
+                <repository-list :user="authenticatedUser" @selectedRepository="setSelectedRepository"></repository-list>
             </div>
             <div class="col-6">
-                <repository-comment></repository-comment>
+                <repository-comment :repository="selectedRepository"></repository-comment>
             </div>
         </div>
     </div>
@@ -23,12 +23,16 @@
         components: {Login, RepositoryList, RepositoryComment},
         data() {
             return {
-                authenticatedUser: null
+                authenticatedUser: null,
+                selectedRepository: null
             }
         },
         methods: {
             userAuthenticated(user) {
                 this.authenticatedUser = user;
+            },
+            setSelectedRepository(repository) {
+                this.selectedRepository = repository;
             }
         }
     }
