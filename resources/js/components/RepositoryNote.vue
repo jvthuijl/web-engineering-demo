@@ -2,11 +2,11 @@
     <div>
         <h3 class="repo-title">{{ repository.full_name }}</h3>
 
-        <div style="margin-bottom: 10px;">
+        <div>
             <p v-if="isFetching" class="text-center text-info">
                 <b-spinner class="align-middle" />
             </p>
-            <b-card-group v-else deck v-for="i in Math.ceil(notes.length / 2)" :key="i">
+            <b-card-group v-else deck v-for="i in Math.ceil(notes.length / 2)" :key="notes.length + '_' + i" style="margin-bottom: 10px;">
                 <b-card v-for="note in notes.slice((i - 1) * 2, i * 2)" :key="note.id">
                     <b-card-text>{{ note.content }}</b-card-text>
                     <div slot="footer" class="text-center">
