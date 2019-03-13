@@ -14,9 +14,9 @@ class AddGithubOauthToUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('github_id');
-            $table->string('github_token');
-            $table->string('github_profile_url');
+            $table->string('github_id')->nullable();
+            $table->string('github_token')->nullable();
+            $table->string('github_profile_url')->nullable();
         });
     }
 
