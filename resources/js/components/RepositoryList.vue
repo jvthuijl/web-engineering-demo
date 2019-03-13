@@ -6,7 +6,7 @@
           <b-input-group-append>
             <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
           </b-input-group-append>
-        </b-input-group>
+        </b-input-group> <br/>
         <b-table selectable
                  select-mode="single"
                  @row-selected="rowSelected"
@@ -34,7 +34,7 @@
                         sortable: true
                     },
                     {
-                        key: 'number_of_stars',
+                        key: 'stars',
                         sortable: true
                     }],
                 isFetching: false,
@@ -55,7 +55,7 @@
                     items.push({
                         id: repository.id,
                         repository: repository.full_name,
-                        number_of_stars: repository.stargazers_count
+                        stars: repository.stargazers_count
                     });
                 });
                 return items;
