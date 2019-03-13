@@ -228,4 +228,6 @@ return [
 
     ],
 
+    'github_client_id' => env('GITHUB_CLIENT_ID'),
+    'github_client_secret' => env('GITHUB_CLIENT_SECRET'),
 ];

@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             return new Github([
                 'clientId' => config('app.github_client_id'),
                 'clientSecret' => config('app.github_client_secret'),
-                'redirectUri' => route('auth.verify')
+                'redirectUri' => url('/')
             ]);
         });
     }

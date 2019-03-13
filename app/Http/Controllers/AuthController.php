@@ -17,40 +17,65 @@ class AuthController extends Controller
     }
 
     public function login() {
-        $authorizationUrl = $this->ghProvider->getAuthorizationUrl();
+        $authorizationUrl = $this->ghProvider->getAuthorizationUrl([
+            'scope' => ['user', 'user:email']
+        ]);
 
         return redirect($authorizationUrl);
     }
 
     public function verify(Request $request) {
+        $this->validate($request, [
+            'code' => 'required|string'
+        ]);
+
         try {
-            $token = $this->ghProvider->getAccessToken('authorization_token', [
-                'code' => $request->get('code')
+            $token = $this->ghProvider->getAccessToken('authorization_code', [
+                'code' => $request->get('code'),
+                'scope' => ['user', 'user:email']
             ]);
 
             /**
              * @var GithubResourceOwner $githubUser
              */
             $githubUser = $this->ghProvider->getResourceOwner($token);
-            $dbUser = User::whereEmail($githubUser->getEmail())->first();
+            $dbUser = User::whereGithubId($githubUser->getId())->first();
             if (!$dbUser) {
                 $dbUser = new User(['github_id' => $githubUser->getId()]);
             }
-            $dbUser->fill([
-                'name' => $githubUser->getNickname(),
-                'email' => $githubUser->getEmail(),
-                'github_profile_url' => $githubUser->getUrl()
-            ]);
+            
+            $dbUser->name = $githubUser->getNickname();
+            $dbUser->email = $githubUser->getEmail();
+            $dbUser->github_profile_url = $githubUser->getUrl();
+            $dbUser->github_token = json_encode($token->getValues());
+
+            $dbUser->rollApiKey();
             $dbUser->save();
 
-            // Return success
+            return response()
+                ->json([
+                    'success' => true,
+                    'error' => null,
+                    'data' => [
+                        'user' => $dbUser
+                    ],
+                ])
+                ->header('Authorization', $dbUser->api_token);
         } catch (IdentityProviderException $e) {
-            // Return error
+            return response()
+                ->json([
+                    'success' => false,
+                    'error' => 'User not authorized'
+                ], 422);
         }
     }
 
     public function logout() {
+        $user = \Auth::user();
+        $user->api_token = null;
+        $user->save();
 
+        return ['success' => true];
     }
 
     public function me() {
