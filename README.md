@@ -11,15 +11,16 @@ When using yarn you can change all npm commands into their corresponding yarn co
 **Steps**
 
 1. Clone the repo
-2. `composer install`
-3. `npm install`
+2. Install the required PHP libraries `composer install`
+3. Install the required JS libraries `npm install`
 4. `cp .env.example .env`
-5. `php artisan key:generate`
-6. Modify the env file and make sure a suitable database driver is setup. 
+5. Generate an application key: `php artisan key:generate`
+6. Modify the .env file and make sure a suitable database driver is setup. 
 When you do not have a running database server, you can use the sqlite driver. [For details see the Laravel documentation](https://laravel.com/docs/5.8/database#configuration)
 7. Modify the env file and setup `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`. [How to get these keys?](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
-8. `php artisan migrate`
-9. Generate the front end code: `npm run dev`
+8. Apply changes to the database: `php artisan migrate`
+9. Generate the front end code (compiling SCSS files, bundeling up js files): `npm run dev`
+10. Serve the application. `php artisan serve`, [Valet](https://laravel.com/docs/5.8/valet) or [Homestead](https://laravel.com/docs/5.8/homestead)
 
 ## How to modify
 When modifying the front end code (resources/js/... or resources/css/...) you have to make sure that you are recompiling your code.
