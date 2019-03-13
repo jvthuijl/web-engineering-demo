@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::get('/login', 'AuthController@login')->name('login');
+
     Route::post('/verify', 'AuthController@verify')->name('auth.verify');
 
     Route::post('/logout', 'AuthController@logout')->middleware('auth:api');

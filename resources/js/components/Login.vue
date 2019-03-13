@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col">
-            <b-jumbotron header="Favorite Repo's" lead="Creating comments on your favorite repositories has never been so easy!">
+            <b-jumbotron header="Favorite Repos" lead="Creating notes on your favorite repositories has never been so easy!">
                 <p>
                     <b-button :disabled="isVerifying" v-on:click='login()' size="lg" variant="primary">Login to GitHub</b-button>
                 </p>
