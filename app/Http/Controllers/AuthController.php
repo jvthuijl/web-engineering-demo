@@ -43,7 +43,7 @@ class AuthController extends Controller
             if (!$dbUser) {
                 $dbUser = new User(['github_id' => $githubUser->getId()]);
             }
-            
+
             $dbUser->name = $githubUser->getNickname();
             $dbUser->email = $githubUser->getEmail();
             $dbUser->github_profile_url = $githubUser->getUrl();

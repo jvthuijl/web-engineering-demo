@@ -75,4 +75,9 @@ class User extends Authenticatable
             $this->api_token = \Str::random(60);
         }while($this->where('api_token', $this->api_token)->exists());
     }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
 }
