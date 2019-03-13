@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Note;
+use App\Policies\NotePolicy;
 use App\Policies\UserPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -15,8 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
         User::class => UserPolicy::class,
+        Note::class => NotePolicy::class,
     ];
 
     /**

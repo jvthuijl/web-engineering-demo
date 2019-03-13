@@ -19,7 +19,7 @@ class NotePolicy
      */
     public function view(User $user, Note $note)
     {
-        return $note->author() === $user;
+        return (int)$note->user_id === $user->id;
     }
 
     /**
@@ -42,7 +42,7 @@ class NotePolicy
      */
     public function update(User $user, Note $note)
     {
-        return $note->author() === $user;
+        return (int)$note->user_id === $user->id;
     }
 
     /**
@@ -54,7 +54,7 @@ class NotePolicy
      */
     public function delete(User $user, Note $note)
     {
-        return $note->author() === $user;
+        return (int)$note->user_id === $user->id;
     }
 
     /**
@@ -66,7 +66,7 @@ class NotePolicy
      */
     public function restore(User $user, Note $note)
     {
-        return $note->author() === $user;
+        return (int)$note->user_id === $user->id;
     }
 
     /**
@@ -78,6 +78,6 @@ class NotePolicy
      */
     public function forceDelete(User $user, Note $note)
     {
-        return $note->author() === $user;
+        return (int)$note->user_id === $user->id;
     }
 }
