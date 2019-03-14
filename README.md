@@ -48,6 +48,6 @@ You can do this by running one of the following commands:
 ## Improvements
 We rolled a custom persistent login for Vue.
 
-It is better to use a tested package like (vue-auth)[https://github.com/websanova/vue-auth]
+It is better to use a tested package like [vue-auth](https://github.com/websanova/vue-auth)
 
 On the server we implemented a basic token authorization. Using something like json webtokens might provide a more robust solution for your use case.
