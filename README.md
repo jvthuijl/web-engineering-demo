@@ -44,3 +44,10 @@ You can do this by running one of the following commands:
 - [Events](https://vuejs.org/v2/guide/components-custom-events.html)
 
 **For more information about Bootstrap Vue [click here](https://bootstrap-vue.js.org/docs)**
+
+## Improvements
+We rolled a custom persistent login for Vue.
+
+It is better to use a tested package like (vue-auth)[https://github.com/websanova/vue-auth]
+
+On the server we implemented a basic token authorization. Using something like json webtokens might provide a more robust solution for your use case.
