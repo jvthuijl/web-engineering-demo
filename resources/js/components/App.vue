@@ -23,12 +23,11 @@
 <script>
     import Login from './Login';
     import RepositoryList from './RepositoryList';
-    import RepositoryNote from './RepositoryNote';
     import {checkForExistingToken, setToken} from "../LoginHelper";
 
     export default {
         name: 'App',
-        components: {Login, RepositoryList, RepositoryNote},
+        components: {Login, RepositoryList},
         data() {
             return {
                 ready: false,
