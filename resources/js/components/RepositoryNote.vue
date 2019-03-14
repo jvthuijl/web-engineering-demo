@@ -2,7 +2,7 @@
     <div>
         <h3 class="repo-title">{{ repository.full_name }}</h3>
         <p>{{ repository.description }} </p>
-        <p><a :href="repository.html_url">Open in GitHub</a></p>
+        <p><a :href="repository.html_url" target="_blank" rel="noopener noreferrer">Open in GitHub</a></p>
         <div>
             <p v-if="isFetching" class="text-center text-info">
                 <b-spinner class="align-middle" />
