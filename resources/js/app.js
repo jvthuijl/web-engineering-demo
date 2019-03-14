@@ -18,14 +18,5 @@ const app = new Vue({
     el: '#app',
     components: {
         App
-    },
-    data : {
-        authenticated : false
-    },
-    methods: {
-        userAuthenticated(user) {
-            this.authenticated = true;
-            console.log(user);
-        }
     }
 });

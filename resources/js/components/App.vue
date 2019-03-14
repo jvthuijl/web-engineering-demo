@@ -11,8 +11,7 @@
                     <repository-list :user="authenticatedUser" @selectedRepository="setSelectedRepository"></repository-list>
                 </div>
                 <div class="col-md-6">
-                    <repository-note v-if="selectedRepository" :repository="selectedRepository"></repository-note>
-                    <p v-else class="text-center">
+                    <p class="text-center">
                         Please select a repository.
                     </p>
                 </div>
@@ -24,12 +23,11 @@
 <script>
     import Login from './Login';
     import RepositoryList from './RepositoryList';
-    import RepositoryNote from './RepositoryNote';
     import {checkForExistingToken, setToken} from "../LoginHelper";
 
     export default {
         name: 'App',
-        components: {Login, RepositoryList, RepositoryNote},
+        components: {Login, RepositoryList},
         data() {
             return {
                 ready: false,
@@ -49,6 +47,7 @@
                 this.authenticatedUser = user;
             },
             setSelectedRepository(repository) {
+                alert(`Selected: ${repository.full_name}`);
                 this.selectedRepository = repository;
             },
             logout() {
