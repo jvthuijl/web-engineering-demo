@@ -26,6 +26,4 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/users/{user}/repositories', 'RepositoryFetcher@fetchForUser');
-
-    Route::apiResource('/repositories/{repositoryId}/notes', 'NoteController');
 });
