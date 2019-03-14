@@ -80,6 +80,8 @@
             rowSelected(selectedItems) {
                 if (selectedItems.length > 0) {
                     this.$emit('selectedRepository', this.repositories.find((repo) => repo.id === selectedItems[0].id));
+                } else {
+                    this.$emit('selectedRepository', null);
                 }
             }
 
